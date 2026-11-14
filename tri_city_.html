@@ -1,0 +1,981 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Tri City Food Corner</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background: #0b0b0b;
+    color: white;
+    overflow-x: hidden;
+}
+
+/* =========================
+   LOADING SCREEN
+========================= */
+
+#loader {
+    position: fixed;
+    inset: 0;
+    background:
+        radial-gradient(circle at center, #3a1d00 0%, #120b04 45%, #050505 100%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    z-index: 99999;
+    transition: opacity 1s ease, visibility 1s ease;
+}
+
+#loader.hide {
+    opacity: 0;
+    visibility: hidden;
+}
+
+.loader-logo {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    border: 3px solid #f5b642;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 15px;
+    animation: logoPulse 1.8s infinite;
+    box-shadow:
+        0 0 20px #f5b642,
+        0 0 60px rgba(245,182,66,0.4);
+}
+
+.loader-logo span {
+    color: #f5b642;
+    font-size: 19px;
+    font-weight: bold;
+    letter-spacing: 2px;
+}
+
+.loader-title {
+    margin-top: 25px;
+    font-size: 30px;
+    letter-spacing: 4px;
+    text-align: center;
+}
+
+.loader-subtitle {
+    margin-top: 8px;
+    color: #bbb;
+    letter-spacing: 2px;
+}
+
+.loader-line {
+    width: 230px;
+    height: 4px;
+    background: #292929;
+    border-radius: 10px;
+    margin-top: 28px;
+    overflow: hidden;
+}
+
+.loader-line::before {
+    content: "";
+    display: block;
+    width: 0%;
+    height: 100%;
+    background: #f5b642;
+    animation: loadingBar 2.3s ease forwards;
+}
+
+@keyframes loadingBar {
+    to {
+        width: 100%;
+    }
+}
+
+@keyframes logoPulse {
+    0%,100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.08);
+    }
+}
+
+/* =========================
+   NAVBAR
+========================= */
+
+nav {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+    padding: 18px 7%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(0,0,0,0.75);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(245,182,66,0.2);
+}
+
+.logo {
+    color: #f5b642;
+    font-size: 21px;
+    font-weight: bold;
+    letter-spacing: 2px;
+}
+
+nav ul {
+    display: flex;
+    gap: 30px;
+    list-style: none;
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+    font-size: 14px;
+    transition: 0.3s;
+}
+
+nav a:hover {
+    color: #f5b642;
+}
+
+/* =========================
+   HERO
+========================= */
+
+.hero {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 120px 20px 60px;
+    position: relative;
+    overflow: hidden;
+
+    background:
+        linear-gradient(rgba(0,0,0,0.63), rgba(0,0,0,0.82)),
+        radial-gradient(circle at center, #5a3109, #080808 65%);
+}
+
+.hero::before {
+    content: "";
+    position: absolute;
+    width: 500px;
+    height: 500px;
+    background: #f5b642;
+    opacity: 0.07;
+    filter: blur(100px);
+    border-radius: 50%;
+}
+
+.hero-content {
+    position: relative;
+    z-index: 2;
+    max-width: 900px;
+    animation: heroIn 1.2s ease;
+}
+
+@keyframes heroIn {
+    from {
+        opacity: 0;
+        transform: translateY(40px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.small-title {
+    color: #f5b642;
+    letter-spacing: 5px;
+    font-size: 14px;
+    margin-bottom: 20px;
+}
+
+.hero h1 {
+    font-size: clamp(45px, 8vw, 90px);
+    line-height: 0.95;
+    margin-bottom: 25px;
+}
+
+.hero h1 span {
+    color: #f5b642;
+}
+
+.hero p {
+    color: #ccc;
+    max-width: 650px;
+    margin: auto;
+    line-height: 1.7;
+    font-size: 17px;
+}
+
+.stars {
+    color: #f5b642;
+    font-size: 22px;
+    margin: 25px 0;
+    letter-spacing: 4px;
+}
+
+.buttons {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.btn {
+    padding: 15px 28px;
+    border-radius: 40px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: 0.3s;
+    display: inline-block;
+}
+
+.btn-gold {
+    background: #f5b642;
+    color: #111;
+}
+
+.btn-gold:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 30px rgba(245,182,66,0.35);
+}
+
+.btn-outline {
+    border: 1px solid #f5b642;
+    color: #f5b642;
+}
+
+.btn-outline:hover {
+    background: #f5b642;
+    color: #111;
+}
+
+/* =========================
+   INFO
+========================= */
+
+.info {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    padding: 55px 7%;
+    gap: 20px;
+    background: #101010;
+}
+
+.info-box {
+    text-align: center;
+    padding: 25px;
+    border: 1px solid #242424;
+    border-radius: 18px;
+    transition: 0.4s;
+}
+
+.info-box:hover {
+    transform: translateY(-8px);
+    border-color: #f5b642;
+}
+
+.info-box h3 {
+    color: #f5b642;
+    margin-bottom: 10px;
+}
+
+.info-box p {
+    color: #bbb;
+}
+
+/* =========================
+   MENU
+========================= */
+
+#menu {
+    padding: 100px 7%;
+    background: #080808;
+}
+
+.section-title {
+    text-align: center;
+    margin-bottom: 55px;
+}
+
+.section-title .small-title {
+    margin-bottom: 12px;
+}
+
+.section-title h2 {
+    font-size: 45px;
+}
+
+.section-title p {
+    color: #aaa;
+    margin-top: 12px;
+}
+
+.menu-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin-bottom: 40px;
+    flex-wrap: wrap;
+}
+
+.menu-btn {
+    padding: 12px 25px;
+    border-radius: 30px;
+    border: 1px solid #444;
+    background: transparent;
+    color: white;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.menu-btn:hover,
+.menu-btn.active {
+    background: #f5b642;
+    color: #111;
+    border-color: #f5b642;
+}
+
+.menu-grid {
+    max-width: 1100px;
+    margin: auto;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+}
+
+.food-card {
+    padding: 25px;
+    border-radius: 18px;
+    background: linear-gradient(145deg, #181818, #0f0f0f);
+    border: 1px solid #252525;
+    transition: 0.4s;
+    animation: cardIn 0.5s ease;
+}
+
+.food-card:hover {
+    transform: translateY(-6px) scale(1.01);
+    border-color: #f5b642;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.5);
+}
+
+.food-top {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.food-card h3 {
+    font-size: 21px;
+}
+
+.price {
+    color: #f5b642;
+    font-weight: bold;
+    white-space: nowrap;
+}
+
+.food-card p {
+    color: #999;
+    margin-top: 9px;
+    line-height: 1.5;
+}
+
+@keyframes cardIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* =========================
+   ABOUT
+========================= */
+
+.about {
+    padding: 100px 7%;
+    background: #111;
+    text-align: center;
+}
+
+.about-content {
+    max-width: 800px;
+    margin: auto;
+}
+
+.about h2 {
+    font-size: 45px;
+    margin-bottom: 25px;
+}
+
+.about p {
+    color: #aaa;
+    line-height: 1.8;
+}
+
+/* =========================
+   CONTACT
+========================= */
+
+.contact {
+    padding: 90px 7%;
+    text-align: center;
+    background:
+        radial-gradient(circle at center, #39200a, #080808 65%);
+}
+
+.contact h2 {
+    font-size: 45px;
+    margin-bottom: 15px;
+}
+
+.contact p {
+    color: #bbb;
+    margin-bottom: 30px;
+}
+
+/* =========================
+   FOOTER
+========================= */
+
+footer {
+    padding: 35px 20px;
+    text-align: center;
+    background: #050505;
+    border-top: 1px solid #222;
+}
+
+footer strong {
+    color: #f5b642;
+}
+
+footer p {
+    color: #777;
+    margin-top: 8px;
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+@media(max-width: 700px) {
+
+    nav {
+        padding: 15px 5%;
+    }
+
+    nav ul {
+        gap: 12px;
+    }
+
+    nav a {
+        font-size: 12px;
+    }
+
+    .hero {
+        padding-top: 140px;
+    }
+
+    .info {
+        grid-template-columns: 1fr;
+        padding: 40px 5%;
+    }
+
+    #menu {
+        padding: 75px 5%;
+    }
+
+    .menu-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .section-title h2,
+    .about h2,
+    .contact h2 {
+        font-size: 34px;
+    }
+
+    .loader-title {
+        font-size: 23px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<!-- =========================
+     LOADING SCREEN
+========================= -->
+
+<div id="loader">
+
+    <div class="loader-logo">
+        <span>TRI CITY<br>FOOD<br>CORNER</span>
+    </div>
+
+    <div class="loader-title">
+        TRI CITY FOOD CORNER
+    </div>
+
+    <div class="loader-subtitle">
+        Taste • Quality • Happiness
+    </div>
+
+    <div class="loader-line"></div>
+
+</div>
+
+
+<!-- =========================
+     NAVBAR
+========================= -->
+
+<nav>
+
+    <div class="logo">
+        TRI CITY
+    </div>
+
+    <ul>
+        <li><a href="#home">Home</a></li>
+        <li><a href="#menu">Menu</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#contact">Contact</a></li>
+    </ul>
+
+</nav>
+
+
+<!-- =========================
+     HERO
+========================= -->
+
+<section class="hero" id="home">
+
+    <div class="hero-content">
+
+        <div class="small-title">
+            WELCOME TO
+        </div>
+
+        <h1>
+            TRI CITY<br>
+            <span>FOOD CORNER</span>
+        </h1>
+
+        <p>
+            Delicious food, great taste and a place
+            where every meal becomes a memory.
+        </p>
+
+        <div class="stars">
+            ★ ★ ★ ★ ★
+        </div>
+
+        <div class="buttons">
+
+            <a href="#menu" class="btn btn-gold">
+                VIEW MENU
+            </a>
+
+            <a href="tel:9888959885" class="btn btn-outline">
+                CALL NOW
+            </a>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================
+     INFO
+========================= -->
+
+<section class="info">
+
+    <div class="info-box">
+        <h3>⭐ 5 STAR EXPERIENCE</h3>
+        <p>Great taste and memorable dining.</p>
+    </div>
+
+    <div class="info-box">
+        <h3>🕝 OPEN DAILY</h3>
+        <p>2:30 PM – 11:30 PM</p>
+    </div>
+
+    <div class="info-box">
+        <h3>📞 CONTACT</h3>
+        <p>9888959885</p>
+    </div>
+
+</section>
+
+
+<!-- =========================
+     MENU
+========================= -->
+
+<section id="menu">
+
+    <div class="section-title">
+
+        <div class="small-title">
+            OUR MENU
+        </div>
+
+        <h2>Something Delicious</h2>
+
+        <p>
+            Explore some of our favourite dishes.
+        </p>
+
+    </div>
+
+
+    <div class="menu-buttons">
+
+        <button class="menu-btn active" onclick="showCategory('all', this)">
+            ALL
+        </button>
+
+        <button class="menu-btn" onclick="showCategory('veg', this)">
+            VEG
+        </button>
+
+        <button class="menu-btn" onclick="showCategory('nonveg', this)">
+            NON-VEG
+        </button>
+
+        <button class="menu-btn" onclick="showCategory('soup', this)">
+            SOUPS
+        </button>
+
+    </div>
+
+
+    <div class="menu-grid" id="menuGrid">
+
+        <!-- VEG -->
+
+        <div class="food-card veg">
+
+            <div class="food-top">
+                <h3>Paneer Tikka</h3>
+                <span class="price">₹249</span>
+            </div>
+
+            <p>
+                Soft paneer grilled with delicious spices.
+            </p>
+
+        </div>
+
+
+        <div class="food-card veg">
+
+            <div class="food-top">
+                <h3>Veg Manchurian</h3>
+                <span class="price">₹199</span>
+            </div>
+
+            <p>
+                Crispy vegetable balls tossed in tasty sauce.
+            </p>
+
+        </div>
+
+
+        <div class="food-card veg">
+
+            <div class="food-top">
+                <h3>Veg Noodles</h3>
+                <span class="price">₹179</span>
+            </div>
+
+            <p>
+                Stir-fried noodles with fresh vegetables.
+            </p>
+
+        </div>
+
+
+        <div class="food-card veg">
+
+            <div class="food-top">
+                <h3>Veg Fried Rice</h3>
+                <span class="price">₹179</span>
+            </div>
+
+            <p>
+                Flavourful rice cooked with vegetables.
+            </p>
+
+        </div>
+
+
+        <!-- NON VEG -->
+
+        <div class="food-card nonveg">
+
+            <div class="food-top">
+                <h3>Chicken Tikka</h3>
+                <span class="price">₹299</span>
+            </div>
+
+            <p>
+                Tender chicken marinated with aromatic spices.
+            </p>
+
+        </div>
+
+
+        <div class="food-card nonveg">
+
+            <div class="food-top">
+                <h3>Chicken Fried Rice</h3>
+                <span class="price">₹229</span>
+            </div>
+
+            <p>
+                Fried rice with delicious chicken pieces.
+            </p>
+
+        </div>
+
+
+        <div class="food-card nonveg">
+
+            <div class="food-top">
+                <h3>Chicken Noodles</h3>
+                <span class="price">₹229</span>
+            </div>
+
+            <p>
+                Stir-fried noodles with seasoned chicken.
+            </p>
+
+        </div>
+
+
+        <div class="food-card nonveg">
+
+            <div class="food-top">
+                <h3>Chilli Chicken</h3>
+                <span class="price">₹279</span>
+            </div>
+
+            <p>
+                Chicken cooked with peppers and spicy sauce.
+            </p>
+
+        </div>
+
+
+        <!-- SOUPS -->
+
+        <div class="food-card soup">
+
+            <div class="food-top">
+                <h3>Tomato Soup</h3>
+                <span class="price">₹129</span>
+            </div>
+
+            <p>
+                Warm and creamy classic tomato soup.
+            </p>
+
+        </div>
+
+
+        <div class="food-card soup">
+
+            <div class="food-top">
+                <h3>Sweet Corn Soup</h3>
+                <span class="price">₹139</span>
+            </div>
+
+            <p>
+                Light and flavourful sweet corn soup.
+            </p>
+
+        </div>
+
+
+        <div class="food-card soup">
+
+            <div class="food-top">
+                <h3>Hot & Sour Soup</h3>
+                <span class="price">₹149</span>
+            </div>
+
+            <p>
+                A spicy and tangy Indo-Chinese favourite.
+            </p>
+
+        </div>
+
+
+        <div class="food-card soup">
+
+            <div class="food-top">
+                <h3>Manchow Soup</h3>
+                <span class="price">₹149</span>
+            </div>
+
+            <p>
+                Rich, spicy soup topped with crispy noodles.
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================
+     ABOUT
+========================= -->
+
+<section class="about" id="about">
+
+    <div class="about-content">
+
+        <div class="small-title">
+            ABOUT US
+        </div>
+
+        <h2>Food Made With Passion</h2>
+
+        <p>
+            At Tri City Food Corner, we believe good food brings
+            people together. Our goal is to serve delicious food
+            with great flavour and create a comfortable place
+            for everyone to enjoy.
+        </p>
+
+    </div>
+
+</section>
+
+
+<!-- =========================
+     CONTACT
+========================= -->
+
+<section class="contact" id="contact">
+
+    <div class="small-title">
+        VISIT US
+    </div>
+
+    <h2>Ready For Something Delicious?</h2>
+
+    <p>
+        Open daily from 2:30 PM to 11:30 PM
+    </p>
+
+    <div class="buttons">
+
+        <a href="tel:9888959885" class="btn btn-gold">
+            📞 9888959885
+        </a>
+
+        <a href="#menu" class="btn btn-outline">
+            VIEW MENU
+        </a>
+
+    </div>
+
+</section>
+
+
+<!-- =========================
+     FOOTER
+========================= -->
+
+<footer>
+
+    <strong>TRI CITY FOOD CORNER</strong>
+
+    <p>
+        Taste • Quality • Happiness
+    </p>
+
+    <p>
+        © 2026 Tri City Food Corner
+    </p>
+
+</footer>
+
+
+<script>
+/* LOADING SCREEN */
+window.addEventListener("DOMContentLoaded", function () {
+    const loader = document.getElementById("loader");
+
+    setTimeout(function () {
+        if (loader) {
+            loader.classList.add("hide");
+
+            setTimeout(function () {
+                loader.style.display = "none";
+            }, 1000);
+        }
+    }, 2500);
+});
+
+/* MENU FILTER */
+function showCategory(category, button) {
+    const cards = document.querySelectorAll(".food-card");
+    const buttons = document.querySelectorAll(".menu-btn");
+
+    buttons.forEach(function(btn) {
+        btn.classList.remove("active");
+    });
+
+    button.classList.add("active");
+
+    cards.forEach(function(card) {
+        if (category === "all" || card.classList.contains(category)) {
+            card.style.display = "block";
+        } else {
+            card.style.display = "none";
+        }
+    });
+}
+</script>
+
+</body>
+</html>
